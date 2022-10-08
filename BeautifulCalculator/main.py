@@ -18,10 +18,6 @@ class Window(QMainWindow):
         self.btn_sqrt.clicked.connect(self.onSqrt)
         self.btn_fact.clicked.connect(self.onFact)
 
-        # self.number1 = ''
-        # self.number2 = ''
-        # self.selectedOperation = None
-
         self.stack = ['', '', None]  # number1, number2, operation
 
     def updateLCD(self) -> None:
@@ -30,22 +26,12 @@ class Window(QMainWindow):
 
     def onDigitClick(self, btn) -> None:
         self.stack[int(bool(self.stack[2]))] += btn.text()
-
-        # if not self.self.stack[2]:
-        #     self.stack[0] += btn.text()
-        # else:
-        #     self.stack[1] += btn.text()
         self.updateLCD()
 
     def onBinaryClick(self, btn) -> None:
         self.stack[2] = btn.text().replace('^', '**')
 
     def onEquals(self) -> None:
-        print(self.stack)
-
-        # if self.stack[1] == '0' and self.stack[2] == '/':
-        #     self.table.display
-
         try:
             self.stack[0] = str(eval('{0} {2} {1}'.format(*self.stack)))
         except ZeroDivisionError:
