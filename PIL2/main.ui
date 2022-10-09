@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>475</width>
+    <height>341</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PIL 2.0</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="4" column="0">
+     <widget class="QPushButton" name="btn_rotateL">
+      <property name="text">
+       <string>Против часовой стрелки</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">rotations</string>
+      </attribute>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="btn_g">
+      <property name="text">
+       <string>G</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">channels</string>
+      </attribute>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="btn_r">
+      <property name="text">
+       <string>R</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">channels</string>
+      </attribute>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="btn_b">
+      <property name="text">
+       <string>B</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">channels</string>
+      </attribute>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="btn_all">
+      <property name="text">
+       <string>ALL</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">channels</string>
+      </attribute>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QPushButton" name="btn_rotateR">
+      <property name="text">
+       <string>По часовой стрелке</string>
+      </property>
+      <attribute name="buttonGroup">
+       <string notr="true">rotations</string>
+      </attribute>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="4">
+     <widget class="QLabel" name="output">
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>250</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>example.jpg</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="channels"/>
+  <buttongroup name="rotations"/>
+ </buttongroups>
+</ui>
