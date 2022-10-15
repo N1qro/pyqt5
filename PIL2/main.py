@@ -17,48 +17,42 @@ class PILWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         uic.loadUi('main.ui', self)
-
-        self.fname = QFileDialog.getOpenFileName(self, 'Выбрать картинку', '')[0]
-        if not self.fname:
-            sys.exit(0)
-        self.openImage(self.fname)
-
-        self.channels.buttonClicked.connect(self.onChannelClick)
+        self.channels.buttonClicked.connect(self.onChannelSwitch)
         self.rotations.buttonClicked.connect(self.onRotate)
+        self.getImageData()
 
-    def onRotate(self, btn) -> None:
-        angle = -90 if btn.objectName()[-1] == 'R' else 90
-        self.im = Image.open('temp.png' if os.path.exists('temp.png') else self.fname)
-        out = self.im.rotate(angle)
-        out.save('temp.png')
-        self.openImage('temp.png')
+    def onChannelSwitch(self, btn):
+        channel = btn.text()
+        self.image.putdata(list(map(self.funcs[channel], self.defaultImage.getdata())))
+        self.image.rotate(self.rotationAngle).save('temp.jpg')
+        self.openImageInPixmap()
 
+    def onRotate(self, btn):
+        self.rotationAngle += -90 if btn.objectName()[-1] == 'R' else 90
+        
+        self.image.rotate(self.rotationAngle).save('temp.jpg')
+        self.openImageInPixmap()
 
-    def onChannelClick(self, btn) -> None:
-        self.im = Image.open(self.fname)
-        self.pixels = self.im.load()
-        self.x, self.y = self.im.size
+    def getImageData(self):
+        filename = QFileDialog.getOpenFileName(
+            self, 'Выбрать картинку', '', 'Картинка (*.jpg);;Картинка (*.jpeg)')[0]
 
-        func = self.funcs[btn.text()]
-        self.pixels = list(map(func, self.im.getdata()))
-        self.im.putdata(self.pixels)
+        self.openImageInPixmap(fname=filename)
+        self.defaultImage = Image.open(filename)
+        self.image = Image.open(filename)
+        self.rotationAngle = 0
 
-        self.im.save('temp.png')
-        self.openImage('temp.png')
-
-    def openImage(self, fname) -> None:
+    def openImageInPixmap(self, fname='temp.jpg') -> None:
         self.pixmapI = QPixmap(fname)
         self.output.setPixmap(self.pixmapI)
-        
-
-
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = PILWindow()
     window.show()
-    
+
     err = app.exec_()
-    os.remove('temp.png')
+    if os.path.exists('temp.jpg'):
+        os.remove('temp.jpg')
     sys.exit(err)
