@@ -26,7 +26,8 @@ class ChequeWindow(QWidget):
                 self.table.setRowCount(self.table.rowCount() + 1)
                 for j, elem in enumerate(row + ['0']):
                     item = QTableWidgetItem()
-                    item.setData(Qt.EditRole, QVariant(int(elem) if elem.isdigit() else elem))
+                    item.setData(Qt.EditRole, QVariant(
+                        int(elem) if elem.isdigit() else elem))
                     if j in (0, 1):
                         item.setFlags(Qt.ItemIsEnabled)
                     self.table.setItem(i, j, item)
@@ -34,7 +35,7 @@ class ChequeWindow(QWidget):
         self.table.cellChanged.connect(self.onCountChange)
         self.adjustSize()
         self.setFixedSize(self.size())
-    
+
     def onCountChange(self, row, column):
         priceBefore = self.prices[row]
         price = int(self.table.item(row, 1).text())
@@ -46,9 +47,6 @@ class ChequeWindow(QWidget):
             priceNow = price * count
             self.prices[row] = priceNow
             self.output.setText(str(sum(self.prices.values())))
-
-
-
 
 
 if __name__ == '__main__':
