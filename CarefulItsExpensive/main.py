@@ -32,7 +32,8 @@ class ChequeWindow(QWidget):
                 self.table.setRowCount(self.table.rowCount() + 1)
                 for j, elem in enumerate(row + ['0']):
                     it = QTableWidgetItem()
-                    it.setData(Qt.EditRole, QVariant(int(elem) if elem.isdigit() else elem))
+                    it.setData(Qt.EditRole, QVariant(
+                        int(elem) if elem.isdigit() else elem))
                     if j in (0, 1):
                         it.setFlags(Qt.ItemIsEnabled)
 
