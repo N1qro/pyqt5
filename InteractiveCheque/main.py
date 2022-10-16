@@ -2,6 +2,7 @@ import sys
 import csv
 
 from PyQt5.QtWidgets import QApplication, QWidget, QTableWidgetItem
+from PyQt5.QtCore import Qt, QVariant
 from PyQt5 import uic
 
 
@@ -24,7 +25,11 @@ class ChequeWindow(QWidget):
             for i, row in enumerate(reader):
                 self.table.setRowCount(self.table.rowCount() + 1)
                 for j, elem in enumerate(row + ['0']):
-                    self.table.setItem(i, j, QTableWidgetItem(elem))
+                    item = QTableWidgetItem()
+                    item.setData(Qt.EditRole, QVariant(int(elem) if elem.isdigit() else elem))
+                    if j in (0, 1):
+                        item.setFlags(Qt.ItemIsEnabled)
+                    self.table.setItem(i, j, item)
 
         self.table.cellChanged.connect(self.onCountChange)
         self.adjustSize()
