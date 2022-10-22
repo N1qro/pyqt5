@@ -11,6 +11,7 @@ class Window(QWidget):
 
     def __init__(self) -> None:
         super().__init__()
+        self.pixmaps = self.getPixmaps()
         self.chosenCar = 'pink'
         self.initUI()
         self.setMouseTracking(True)
@@ -44,17 +45,19 @@ class Window(QWidget):
         if event.key() == Qt.Key.Key_Space:
             self.loadPixmap()
 
+    def getPixmaps(self) -> dict:
+        pixmaps = dict()
+        for name in self.availableColors:
+            pixmaps[name] = QPixmap(name + '.png').scaled(60, 30)
+        return pixmaps
+
     def loadPixmap(self) -> None:
-        imageName = random.choice(self.availableColors)
+        color = random.choice(self.availableColors)
+        while color == self.chosenCar:
+            color = random.coice(self.availableColors)
+        self.chosenCar = color
 
-        while imageName == self.chosenCar:
-            imageName = random.choice(self.availableColors)
-
-        self.chosenCar = imageName
-        imageName += '.png'
-
-        pixmap = QPixmap(imageName).scaled(60, 30)
-        self.label.setPixmap(pixmap)
+        self.label.setPixmap(self.pixmaps[color])
 
 
 if __name__ == "__main__":
