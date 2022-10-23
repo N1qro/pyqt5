@@ -1,18 +1,17 @@
-import sys
 import sqlite3
-
-from os.path import join
+import sys
 from functools import partial
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QListWidgetItem
-from PyQt5.QtGui import QPixmap
+from os.path import join
+
 from PyQt5 import uic
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QListWidgetItem, QPushButton, QWidget
 
 
 class Popup(QWidget):
     def __init__(self) -> None:
         super().__init__()
         uic.loadUi('popup.ui', self)
-
 
 
 class Window(QWidget):
@@ -29,6 +28,9 @@ class Window(QWidget):
     def onSubmit(self) -> None:
         category = self.searchBy.currentText()
         expression = self.searchParams.text()
+
+        while self.displayList.count() > 0:
+            self.displayList.takeItem(0)
 
         query = self.query
         if expression:
