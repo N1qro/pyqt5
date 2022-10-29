@@ -31,7 +31,7 @@ class Window(QWidget):
     def drawSquares(self, qp):
         qp.setPen(QColor(0, 0, 0))
         qp.setBrush(QColor(100, 100, 100))
-        qp.drawRects(self.toDraw)
+        qp.drawRects(*self.toDraw)
 
     def onSubmit(self) -> None:
         center = self.canvas.frameGeometry().center()
