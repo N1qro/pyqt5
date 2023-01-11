@@ -5,7 +5,7 @@ from PyQt5.QtGui import QColor
 from PyQt5 import uic
 
 # Игнор людей с 0 баллами
-IGNORE_ZEROLEVEL_WORKS = False
+IGNORE_ZEROLEVEL_WORKS = True
 
 
 class Window(QWidget):
@@ -76,7 +76,7 @@ class Window(QWidget):
             scores[scores.index(None)] = all_scores.pop(0)
 
         # Если набрано 0 баллов, то призовых не будет
-        if not IGNORE_ZEROLEVEL_WORKS:
+        if IGNORE_ZEROLEVEL_WORKS:
             while 0 in scores:
                 scores[scores.index(0)] = None
 
