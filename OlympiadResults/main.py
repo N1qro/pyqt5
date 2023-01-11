@@ -1,80 +1,76 @@
 import sys
 import csv
-
 from PyQt5.QtWidgets import QApplication, QWidget, QTableWidgetItem
-from PyQt5.QtCore import Qt, QVariant
 from PyQt5 import uic
 
 
 class Window(QWidget):
-    def __init__(self) -> None:
+    def __init__(self):
         super().__init__()
-        self.initUI()
 
-    def checkConditions(self, split, conditions):
-        for splitIndex, value in conditions.items():
-            if split[splitIndex] != value:
-                return False
-        return True
+        # Загружаем CSV данные в программу.
+        with open('rez.csv', encoding='UTF-8') as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',', quotechar='"')
+            next(csv_reader)
+            self.data = list(csv_reader)
 
-    def loadTable(self, conditions=dict()):
-        with open('bd.csv', encoding="utf8") as csvfile:
-            reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-            title = ['Фамилия', 'Результат']
-            next(reader)
-            self.table.setColumnCount(len(title))
-            self.table.setHorizontalHeaderLabels(title)
-            self.table.setRowCount(0)
-            for i, row in enumerate(reader):
-                user_name = row[1].split()
-                if self.checkConditions(user_name, conditions):
-                    self.table.setRowCount(
-                        self.table.rowCount() + 1)
-                    
-                    surname = user_name[3]
-                    score = row[-1]
-                    print(surname, score)
-
-                    item1 = QTableWidgetItem()
-                    item1.setData(Qt.EditRole, QVariant(surname))
-
-                    item2 = QTableWidgetItem()
-                    item2.setData(Qt.EditRole, QVariant(int(score)))
-
-                    self.table.setItem(i, 0, item1)
-                    self.table.setItem(i, 1, item2)    
-            self.table.resizeColumnsToContents()
-
-    def initUI(self):
         uic.loadUi('main.ui', self)
-        self.submitButton.clicked.connect(self.onClick)
-        self.schoolInput.addItem('Все')
-        self.classInput.addItem('Все')
+        self.fill_filters()
+        self.populate_table()
+        self.submit_button.clicked.connect(self.on_click)
 
-        schools = set()
-        classes = set()
-        with open('bd.csv', encoding='UTF-8') as csvFile:
-            csvReader = csv.DictReader(csvFile, quotechar='"')
-            for row in csvReader:
-                school, _class = row['user_name'].split()[1:3]
-                schools.add(school)
-                classes.add(_class)
+    def on_click(self):
+        filters = self.get_filter_data()
+        self.populate_table(filters)
 
-        self.schoolInput.addItems(sorted(schools, key=int))
-        self.classInput.addItems(sorted(classes, key=int))
-        self.loadTable()
+    def get_filter_data(self):
+        sch = self.school_filter.currentText()
+        cs = self.class_filter.currentText()
+        return (sch if sch != 'Все' else None, cs if cs != 'Все' else None)
 
-    def onClick(self):
-        school = self.schoolInput.currentText()
-        _class = self.classInput.currentText()
-        conditions = dict()
-        
-        if school != 'Все':
-            conditions[1] = school
-        if _class != 'Все':
-            conditions[2] = _class
+    def fill_filters(self):
+        all_sch = set()
+        all_cls = set()
+        for line in self.data:
+            login = line[2]
+            sch_num, cls_num = login.split('-')[2:4]
+            all_sch.add(sch_num)
+            all_cls.add(cls_num)
 
-        self.loadTable(conditions)
+        self.school_filter.addItems(sorted(all_sch))
+        self.class_filter.addItems(sorted(all_cls))
+
+    def populate_table(self, filters=None):
+        title = ('Фамилия', 'Результат')
+
+        rows = list()
+        for line in self.data:
+
+            username = line[1]
+            sch_num, cls_num, surname = username.split()[1:4]
+
+            if filters is not None:
+                if filters[0]:  # School check
+                    if sch_num != filters[0]:
+                        continue
+                if filters[1]:  # Class check
+                    if cls_num != filters[1]:
+                        continue
+
+            result = line[-1]
+            rows.append((surname, result))
+
+        self.tableWidget.setColumnCount(len(title))
+        self.tableWidget.setHorizontalHeaderLabels(title)
+        self.tableWidget.setRowCount(0)
+        for i, row in enumerate(rows):
+            self.tableWidget.setRowCount(
+                self.tableWidget.rowCount() + 1)
+            for j, elem in enumerate(row):
+                self.tableWidget.setItem(
+                    i, j, QTableWidgetItem(elem))
+
+        self.tableWidget.resizeColumnsToContents()
 
 
 if __name__ == "__main__":

@@ -6,48 +6,40 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>359</height>
+    <width>637</width>
+    <height>486</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Результаты олимпиады: Фильтрация</string>
+   <string>Результат олимпиады: Фильтрация</string>
   </property>
   <property name="windowIcon">
    <iconset>
     <normaloff>trophy.png</normaloff>trophy.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="leftMargin">
-    <number>10</number>
-   </property>
-   <property name="topMargin">
-    <number>5</number>
-   </property>
-   <property name="rightMargin">
-    <number>10</number>
-   </property>
-   <property name="bottomMargin">
-    <number>10</number>
-   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QComboBox" name="schoolInput">
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAtBottom</enum>
-       </property>
+      <widget class="QComboBox" name="school_filter">
+       <item>
+        <property name="text">
+         <string>Все</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="classInput">
-       <property name="insertPolicy">
-        <enum>QComboBox::InsertAtBottom</enum>
-       </property>
+      <widget class="QComboBox" name="class_filter">
+       <item>
+        <property name="text">
+         <string>Все</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="submitButton">
+      <widget class="QPushButton" name="submit_button">
        <property name="text">
         <string>Узнать результаты</string>
        </property>
@@ -56,7 +48,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="table"/>
+    <widget class="QTableWidget" name="tableWidget"/>
    </item>
   </layout>
  </widget>
